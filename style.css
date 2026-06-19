@@ -215,6 +215,9 @@ main {
     margin-bottom: 22px;
 }
 
+/* ==========================================================
+   TIMELINE
+   ========================================================== */
 .timeline {
     position: relative;
     padding-left: 12px;
@@ -222,12 +225,12 @@ main {
     padding-bottom: 20px;
 }
 
-/* The vertical line */
+/* Vertical line (pseudo-element) */
 .timeline::before {
     content: "";
     position: absolute;
-    left: -4px;        
-    top: 7px;       
+    left: -4px;
+    top: 7px;
     bottom: 60px;
     width: 2px;
     background: #4A6FA5;
@@ -237,13 +240,11 @@ main {
     bottom: 100px !important;
 }
 
-
 .timeline-item {
     position: relative;
     margin-bottom: 16px;
     padding-left: 12px;
 }
-
 
 /* DOTS */
 .timeline-item::before {
@@ -288,19 +289,26 @@ main {
 }
 
 /* ==========================================================
-   PRINT / PDF EXPORT
+   PRINT / PDF EXPORT — FIXED
    ========================================================== */
 @media print {
+
+    /* Force background colors & gradients */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     body {
-        background: none;
-        padding: 0;
+        background: none !important;
+        padding: 0 !important;
     }
 
     #page {
-        width: 210mm;
-        min-height: 297mm;
-        box-shadow: none;
-        margin: 0;
+        width: 210mm !important;
+        min-height: 297mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
     }
 
     @page {
