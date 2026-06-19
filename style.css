@@ -232,7 +232,7 @@ main {
     left: -4px;
     top: 7px;
     bottom: 60px;
-    width: 2px;
+    width: 2px !important;
     background: #4A6FA5;
 }
 
@@ -250,7 +250,7 @@ main {
 .timeline-item::before {
     content: "";
     position: absolute;
-    left: -19.5px;
+    left: -19px;
     top: 6px;
     width: 9px;
     height: 9px;
@@ -285,7 +285,7 @@ main {
     content: "•";
     position: absolute;
     left: 0;
-    color: #674EA7;
+    color: #4A6FA5;
 }
 
 /* ==========================================================
