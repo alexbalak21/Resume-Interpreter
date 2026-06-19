@@ -187,6 +187,7 @@ main {
     font-weight: 700;
     margin-bottom: 10px;
     position: relative;
+    margin-left: -6px;
 }
 
 .section-title::after {
@@ -216,7 +217,7 @@ main {
 
 .timeline {
     position: relative;
-    padding-left: 18px;
+    padding-left: 12px;
     margin-top: 20px;
     padding-bottom: 20px;
 }
@@ -225,9 +226,9 @@ main {
 .timeline::before {
     content: "";
     position: absolute;
-    left: -2px;          /* same position as your border-left */
-    top: 7px;        /* <-- THIS controls how low the line starts */
-    bottom: 60px;      /* <-- THIS controls how high the line goes */
+    left: -4px;        
+    top: 7px;       
+    bottom: 60px;
     width: 2px;
     background: #4A6FA5;
 }
@@ -237,18 +238,19 @@ main {
 }
 
 
-
 .timeline-item {
     position: relative;
     margin-bottom: 16px;
     padding-left: 12px;
 }
 
+
+/* DOTS */
 .timeline-item::before {
     content: "";
     position: absolute;
-    left: -23.5px;
-    top: 7px;
+    left: -19.5px;
+    top: 6px;
     width: 9px;
     height: 9px;
     border-radius: 50%;
