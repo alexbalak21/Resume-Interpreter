@@ -1,13 +1,11 @@
 # HEADER
 Alexandre Balakirev  
-Support Applicatif N2 / Développeur Logiciel  
+Support Applicatif N2 / Développeur Web  
 LinkedIn: @alexandre-balakirev | https://linkedin.com/in/alexandre-balakirev  
 Site web: www.alex-balak.online | https://www.alex-balak.online
 
 # PROFILE
-Technicien **Support Applicatif N2** et **Développeur**, spécialisé dans le diagnostic, l’analyse technique et la résolution d’incidents sur applications métiers.  
-Habitué à investiguer des anomalies, analyser des logs, corriger des données SQL, reproduire des bugs et collaborer avec les équipes produit/développement pour garantir la continuité de service.  
-Rigoureux, orienté satisfaction client et à l’aise dans les environnements critiques, je recherche un poste mêlant **support, analyse technique et corrections logicielles**.
+Support Applicatif N2 et Développeur Web, spécialisé dans l’analyse technique, le diagnostic d’incidents et les corrections SQL / code. À l’aise avec les environnements applicatifs complexes, j’investigue les anomalies, reproduis les bugs et propose des correctifs fiables. Orienté service client et qualité logicielle, j’évolue dans des rôles mêlant support, analyse et développement.
 
 # CONTACT
 - Téléphone : (+33) 06.58.37.06.05
