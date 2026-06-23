@@ -36,14 +36,31 @@ function parseFaShortcodes(string $text): string
     );
 }
 
-$md = parseFaShortcodes($md);
-
+// Split BEFORE running shortcodes so section keys stay clean (e.g. "CONTACT" not "§§0§§ CONTACT")
 $chunks = preg_split('/^# (.+)$/m', $md, -1, PREG_SPLIT_DELIM_CAPTURE);
-$sections = [];
+$sections      = [];   // key → content body (raw markdown)
+$sectionTitles = [];   // key → original title line (may contain [fa:...] shortcodes)
 for ($i = 1; $i < count($chunks); $i += 2) {
-    $title = strtoupper(trim($chunks[$i]));
-    $content = trim($chunks[$i + 1]);
-    $sections[$title] = $content;
+    $rawTitle = trim($chunks[$i]);
+    // Strip any [fa:...] shortcodes from the key so lookups stay predictable
+    $key = strtoupper(trim(preg_replace('/\[fa:[^\]]+\]/i', '', $rawTitle)));
+    $sectionTitles[$key] = $rawTitle;          // keep original (with icon shortcode)
+    $sections[$key]      = trim($chunks[$i + 1]);
+}
+
+// Now apply shortcodes to content bodies and title strings
+foreach ($sections as $k => $v)      { $sections[$k]      = parseFaShortcodes($v); }
+foreach ($sectionTitles as $k => $v) { $sectionTitles[$k] = parseFaShortcodes($v); }
+
+/**
+ * Render a section title string: icon (if any) + label text.
+ * Used for both aside-title and section-title elements.
+ */
+function renderSectionTitle(string $raw): string
+{
+    // $raw may contain §§N§§ placeholders already processed by parseFaShortcodes
+    // Restore them via MiniMarkdown::inline so the <i> tag appears
+    return MiniMarkdown::inline($raw);
 }
 
 // ----------------------------------------------------------------
@@ -107,6 +124,30 @@ function renderTimeline(array $items): string
 // 3. Build each placeholder's HTML from its Markdown section
 // ----------------------------------------------------------------
 $placeholders = [];
+
+// --- SECTION TITLES (supports [fa:...] icons in # headings) ---
+// For every known section, expose a {{SECTION_TITLE}} placeholder
+// that renders the icon + label from the markdown heading.
+// French display labels used as fallback when the heading has no icon shortcode
+$sectionLabels = [
+    'CONTACT'        => 'Contact',
+    'SKILLS'         => 'Compétences',
+    'CERTIFICATIONS' => 'Certifications',
+    'LANGUAGES'      => 'Langues',
+    'HOBBIES'        => 'Intérêts',
+    'EXPERIENCE'     => 'Expériences Professionnelles',
+    'EDUCATION'      => 'Formations',
+    'PROFILE'        => 'Profil',
+];
+foreach ($sectionLabels as $sec => $label) {
+    if (isset($sectionTitles[$sec])) {
+        // Heading existed in cv.md — render it (may contain icon + text or just text)
+        $placeholders[$sec . '_TITLE'] = renderSectionTitle($sectionTitles[$sec]);
+    } else {
+        // Section has no custom heading — use the French default
+        $placeholders[$sec . '_TITLE'] = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
+    }
+}
 
 // --- HEADER (name, job title, links) ---
 $headerLines = preg_split('/\r?\n/', $sections['HEADER'] ?? '');
