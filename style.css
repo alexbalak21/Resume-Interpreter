@@ -201,9 +201,6 @@ main {
     margin-top: 4px;
 }
 
-#contact {
-    margin-bottom: 14px;
-}
 
 .contact-grid {
     display: flex;
@@ -246,7 +243,7 @@ main {
 }
 
 #experience .timeline::before {
-    bottom: 90px !important;
+    bottom: 110px !important;
 }
 
 /* DOTS */

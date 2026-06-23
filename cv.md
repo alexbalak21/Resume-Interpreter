@@ -33,8 +33,9 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 - IBM Node / Express Developer
 
 # LANGUAGES
-- Anglais — Courant (C1)
-- Russe — Natif
+- Anglais — Courant - C1 
+- Russe — Natif - Courant
+- Allemand — Scoliare - Notions
 
 # HOBBIES
 - Fitness / Musculation
@@ -42,43 +43,39 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 
 # EXPERIENCE
 
-## Développeur Support / Full-Stack — Novocib
+## Développeur  Full-Stack - Novocib
 **Jul 2025 – Feb 2026**
-- Analyse technique et correction d’anomalies sur outils internes (Spring Boot, PostgreSQL).
-- Diagnostic, reproduction d’incidents et corrections SQL.
-- Développement d’outils internes pour automatiser des processus métier.
-- Support technique auprès des utilisateurs internes.
+- Amélioration du SCO et développement d'outils internes de back-office, messagerie... (Spring Boot, PostgreSQL)
+- Développement front-end réactif avec React JS et Tailwind CSS
 
-## Développeur SAGE X3 — Kardol
+
+## Développeur SAGE X3 - Kardol
 **Oct 2024 – Avr 2025**
-- Maintenance applicative et résolution d’incidents sur l’ERP Sage X3 (L4G, SQL).
+- Maintenance applicative et résolution d’incidents sur l’ERP Sage X3.
 - Analyse fonctionnelle et technique, corrections de données.
-- Développement de spécifiques clients et APIs REST.
-- Collaboration avec équipes intégration et édition.
+- Développement de spécifiques clients, redaction documentation.
 
-## Développeur Full-Stack — Novocib
+## Développeur Full-Stack - Novocib
 **Fév 2024 – Mai 2024**
 - Développement backend (Laravel, MySQL) et création d’APIs internes.
 - Automatisation de tâches via Python.
 - Support technique interne : diagnostic, reproduction, corrections SQL.
 
-## Développeur Web — Fly'IT
+## Développeur Web - Fly'IT
 **Oct 2023 – Nov 2023**
 - Création du site web de l’entreprise (HTML, CSS, JS, PHP).
-- Intégration et optimisation front-end.
 
 ## Analyste Fonctionnel N2 — CGI
 **Juil 2022 – Oct 2023**
-- Support N2 sur logiciels CAO utilisés par EDF.
-- Diagnostic applicatif, reproduction d’anomalies, analyse de logs.
-- Suivi complet des tickets (Jira) et communication avec les équipes produit.
-- Développement d’outils internes en Python pour automatiser des tâches.
+- Diagnostic et résolution de problèmes sur logiciels CAO (Bash, C) 
+- Support utilisateurs et correction de bugs (Jira, Notions)
+- Développement d'outils internes en Python.
 
-## Technicien Avionique — Armée de Terre, Phalsbourg
+## Technicien Avionique - Armée de Terre, Phalsbourg
 **Mar 2010 – Juin 2021**
-- Diagnostic et maintenance de systèmes critiques embarqués.
+- Diagnostic et maintenance de systèmes avioniques embarqués.
 - Gestion d’incidents complexes dans un environnement exigeant.
-- Travail en anglais sur documentation technique et systèmes avioniques.
+- Travail en anglais sur documentation technique et systèmes.
 
 # EDUCATION
 

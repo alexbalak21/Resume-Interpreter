@@ -63,7 +63,7 @@ Développeur **Java / Spring Boot** et **JavaScript / React**, capable de concev
 ## Analyste Fonctionnel N2 — CGI
 **Juil 2022 – Oct 2023**
 - Diagnostic et résolution de problèmes sur logiciels CAO utilisés par EDF (Bash, C)
-- Support utilisateurs et correction de bugs (Jira)
+- Support utilisateurs et correction de bugs (Jira, Notions)
 - Développement d'outils internes en Python
 
 ## Technicien Avionique — Armée de Terre, Phalsbourg
