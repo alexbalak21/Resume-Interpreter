@@ -18,9 +18,12 @@
                 <img src="photo.jpg" alt="Photo de profil" id="photo">
             </div>
 
-            <div class="aside-block" id="profile">
-                <h3 class="aside-title">Profil</h3>
-                {{PROFILE}}
+            <!-- CONTACT moved here, under photo -->
+            <div class="aside-block" id="contact">
+                <h3 class="aside-title">Contact</h3>
+                <div class="contact-grid">
+                    {{CONTACT}}
+                </div>
             </div>
 
             <div class="aside-block" id="skills">
@@ -57,16 +60,15 @@
                 <div id="header-icon">&lt;/&gt;</div>
             </header>
 
-            <section id="contact">
-                <h3 class="section-title">Contact</h3>
-                <div class="contact-grid">
-                    {{CONTACT}}
-                </div>
+            <!-- PROFILE moved here, under header -->
+            <section id="profile">
+                <h3 class="section-title">Profil</h3>
+                {{PROFILE}}
             </section>
 
             <section id="experience">
                 <h3 class="section-title">Expériences Professionnelles</h3>
-                <div class="timeline"> 
+                <div class="timeline">
                     {{EXPERIENCE}}
                 </div>
             </section>

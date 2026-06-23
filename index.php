@@ -144,6 +144,7 @@ $placeholders['LINKS'] = $linksHtml;
 $placeholders['PROFILE'] = '<p>' . MiniMarkdown::inline($sections['PROFILE'] ?? '') . '</p>';
 
 // --- CONTACT (FA icon per known label) ---
+// Supports optional link: "Label : display text | tel:+33..." or "| mailto:..."
 $contactIcons = [
     'téléphone'         => '<i class="fa-solid fa-phone"></i>',
     'email'             => '<i class="fa-solid fa-envelope"></i>',
@@ -154,12 +155,20 @@ $contactIcons = [
 $contactHtml = '';
 foreach (preg_split('/\r?\n/', trim($sections['CONTACT'] ?? '')) as $line) {
     $line = trim($line);
-    if ($line === '' || !preg_match('/^-\s+(.+?)\s*:\s*(.+)$/', $line, $m)) continue;
-    $label = trim($m[1]);
-    $value = trim($m[2]);
-    $icon  = $contactIcons[mb_strtolower($label)] ?? '<i class="fa-solid fa-circle-dot"></i>';
+    if ($line === '') continue;
+    // Format: "- Label : display text | scheme:value"
+    // The scheme (tel, mailto) is captured separately so the colon in "Label :" doesn't clash
+    if (!preg_match('/^-\s+(.+?)\s*:\s*(.+?)(?:\s*\|\s*((?:tel|mailto):[^\s]+))?$/u', $line, $m)) continue;
+    $label   = trim($m[1]);
+    $display = trim($m[2]);
+    $href    = isset($m[3]) ? trim($m[3]) : null;
+    $icon    = $contactIcons[mb_strtolower($label)] ?? '<i class="fa-solid fa-circle-dot"></i>';
+    $text    = MiniMarkdown::inline($display);
+    $content = $href
+        ? '<a href="' . htmlspecialchars($href, ENT_QUOTES) . '">' . $text . '</a>'
+        : $text;
     $contactHtml .= '<div class="contact-item"><span class="icon">' . $icon . '</span> '
-                  . MiniMarkdown::inline($value) . "</div>\n";
+                  . $content . "</div>\n";
 }
 $placeholders['CONTACT'] = $contactHtml;
 

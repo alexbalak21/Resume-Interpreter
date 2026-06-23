@@ -5,24 +5,26 @@ LinkedIn: @alexandre-balakirev | https://linkedin.com/in/alexandre-balakirev
 Site web: www.alex-balak.online | https://www.alex-balak.online
 
 # PROFILE
-Support Applicatif N2 et Développeur Web, spécialisé dans l’analyse technique, le diagnostic d’incidents et les corrections SQL / code. À l’aise avec les environnements applicatifs complexes, j’investigue les anomalies, reproduis les bugs et propose des correctifs fiables. Orienté service client et qualité logicielle, j’évolue dans des rôles mêlant support, analyse et développement.
+**Annalyste Support Applicatif N2** et **Développeur Web**, spécialisé dans le diagnostic d’incidents, les corrections et ajustements de code. J’analyse, reproduis et résous les anomalies pour garantir la qualité et la continuité du service.
+
 
 # CONTACT
-- Téléphone : (+33) 06.58.37.06.05
-- Email : alex.balak@outlook.fr
+- Téléphone : (+33) 06.58.37.06.05 | tel:+33658370605
+- Email : alex.balak@outlook.fr | mailto:alex.balak@outlook.fr
 - Localisation : Lyon 8, France
 - Date de naissance : 06.11.1985
 - Permis : Permis B
 
 # SKILLS
-- Support applicatif N1/N2 — Diagnostic & Analyse
-- Analyse de logs (Linux / Windows)
-- SQL / MySQL / PostgreSQL — Corrections de données
-- Lecture & correction de code (Java, Python, JavaScript)
-- Reproduction d’anomalies — Tests & validation
-- Outils de ticketing : Jira, GLPI
-- Développement : Java / Spring Boot, Python / Flask, JS / React, PHP / Laravel
-- Git / GitHub Actions — Docker
+- [fa:solid:headset] Support applicatif N1/N2
+- [fa:solid:magnifying-glass] Analyse d'incidents et logs
+- [fa:solid:bug] Développement correctif
+- [fa:solid:database] SQL / MySQL / PostgreSQL
+- [fa:brands:java] Java / JEE / Spring Boot
+- [fa:brands:js] JavaScript / TypeScript
+- [fa:brands:python] Python / Flask / Django
+- [fa:solid:location-crosshairs] Outils de ticketing : Jira
+- [fa:brands:github] Git / GitHub Actions / Docker
 
 # CERTIFICATIONS
 - IBM Java Developer
