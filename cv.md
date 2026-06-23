@@ -1,11 +1,13 @@
 # HEADER
-Alexandre Balakirev
-Développeur Full-Stack Java / React
-LinkedIn: @alexandre-balakirev | https://linkedin.com/in/alexandre-balakirev
+Alexandre Balakirev  
+Support Applicatif N2 / Développeur Logiciel  
+LinkedIn: @alexandre-balakirev | https://linkedin.com/in/alexandre-balakirev  
 Site web: www.alex-balak.online | https://www.alex-balak.online
 
 # PROFILE
-Développeur **Java / Spring Boot** et **JavaScript / React**, capable de concevoir, développer et livrer des applications complètes. Rigoureux, autonome, adaptable, et à l'aise dans les environnements techniques exigeants.
+Technicien **Support Applicatif N2** et **Développeur**, spécialisé dans le diagnostic, l’analyse technique et la résolution d’incidents sur applications métiers.  
+Habitué à investiguer des anomalies, analyser des logs, corriger des données SQL, reproduire des bugs et collaborer avec les équipes produit/développement pour garantir la continuité de service.  
+Rigoureux, orienté satisfaction client et à l’aise dans les environnements critiques, je recherche un poste mêlant **support, analyse technique et corrections logicielles**.
 
 # CONTACT
 - Téléphone : (+33) 06.58.37.06.05
@@ -15,14 +17,14 @@ Développeur **Java / Spring Boot** et **JavaScript / React**, capable de concev
 - Permis : Permis B
 
 # SKILLS
-- [fa:brands:java] Java / Spring Boot
-- [fa:brands:js] JavaScript / TypeScript
-- [fa:brands:react] React JS / Next.js
-- [fa:brands:html5] HTML / CSS / Tailwind CSS
-- [fa:brands:python] Python / Flask / Django
-- [fa:solid:database] SQL / MySQL / MongoDB
-- [fa:brands:github] Git / GitHub Actions
-- [fa:brands:docker] Docker / Kubernetes
+- Support applicatif N1/N2 — Diagnostic & Analyse
+- Analyse de logs (Linux / Windows)
+- SQL / MySQL / PostgreSQL — Corrections de données
+- Lecture & correction de code (Java, Python, JavaScript)
+- Reproduction d’anomalies — Tests & validation
+- Outils de ticketing : Jira, GLPI
+- Développement : Java / Spring Boot, Python / Flask, JS / React, PHP / Laravel
+- Git / GitHub Actions — Docker
 
 # CERTIFICATIONS
 - IBM Java Developer
@@ -40,43 +42,50 @@ Développeur **Java / Spring Boot** et **JavaScript / React**, capable de concev
 
 # EXPERIENCE
 
-## Développeur Full-Stack — Novocib
+## Développeur Support / Full-Stack — Novocib
 **Jul 2025 – Feb 2026**
-- Amélioration du SCO et développement d'outils internes de back-office, messagerie... (Spring Boot, PostgreSQL)
-- Développement front-end réactif avec React JS et Tailwind CSS
+- Analyse technique et correction d’anomalies sur outils internes (Spring Boot, PostgreSQL).
+- Diagnostic, reproduction d’incidents et corrections SQL.
+- Développement d’outils internes pour automatiser des processus métier.
+- Support technique auprès des utilisateurs internes.
 
 ## Développeur SAGE X3 — Kardol
 **Oct 2024 – Avr 2025**
-- Développement sur l'ERP Sage X3 (L4G, SQL, API REST)
-- Travail sur APIs REST et logique métier
+- Maintenance applicative et résolution d’incidents sur l’ERP Sage X3 (L4G, SQL).
+- Analyse fonctionnelle et technique, corrections de données.
+- Développement de spécifiques clients et APIs REST.
+- Collaboration avec équipes intégration et édition.
 
 ## Développeur Full-Stack — Novocib
 **Fév 2024 – Mai 2024**
-- Conception et développement complet du site web de l'entreprise (PHP, Laravel, MySQL, Bootstrap)
-- Création d'un back-office sur mesure (Express, React)
-- Développement d'interfaces dynamiques avec React JS
+- Développement backend (Laravel, MySQL) et création d’APIs internes.
+- Automatisation de tâches via Python.
+- Support technique interne : diagnostic, reproduction, corrections SQL.
 
 ## Développeur Web — Fly'IT
 **Oct 2023 – Nov 2023**
-- Création du site web de l'entreprise (HTML, CSS, JS, PHP)
+- Création du site web de l’entreprise (HTML, CSS, JS, PHP).
+- Intégration et optimisation front-end.
 
 ## Analyste Fonctionnel N2 — CGI
 **Juil 2022 – Oct 2023**
-- Diagnostic et résolution de problèmes sur logiciels CAO utilisés par EDF (Bash, C)
-- Support utilisateurs et correction de bugs (Jira)
-- Développement d'outils internes en Python
+- Support N2 sur logiciels CAO utilisés par EDF.
+- Diagnostic applicatif, reproduction d’anomalies, analyse de logs.
+- Suivi complet des tickets (Jira) et communication avec les équipes produit.
+- Développement d’outils internes en Python pour automatiser des tâches.
 
 ## Technicien Avionique — Armée de Terre, Phalsbourg
 **Mar 2010 – Juin 2021**
-- Maintenance et diagnostic de systèmes avioniques critiques
-- Gestion de systèmes informatiques embarqués en anglais
+- Diagnostic et maintenance de systèmes critiques embarqués.
+- Gestion d’incidents complexes dans un environnement exigeant.
+- Travail en anglais sur documentation technique et systèmes avioniques.
 
 # EDUCATION
 
-## Bac+2 : Développeur Web Développement Full-Stack
-CMFP (AFPA), Fontenay-le-Comte
-**Août 2020 – Juin 2026**
+## Bac+2 : Développeur Web Full-Stack
+CMFP (AFPA), Fontenay-le-Comte  
+**Août 2020 – Juin 2021**
 
 ## Licence Aéronautique
-Armée de Terre, BA721
+Armée de Terre, BA721  
 **Juin 2011 – Juin 2012**
