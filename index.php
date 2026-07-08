@@ -3,15 +3,94 @@
  * index.php
  * ---------
  * Loads cv.md, splits it into sections, converts each section to HTML,
- * and injects the result into template.html.
+ * and injects the result into the appropriate language template.
  *
- * Edit cv.md to update your CV content — no HTML editing required.
+ * Multilingual support: append ?lang=fr (default) or ?lang=en to the URL.
+ * The language controls:
+ *  - Which template file is used (template_fr.html / template.html)
+ *  - Fallback section-title labels when a heading has no icon shortcode
+ *  - Contact icon keyword lookup table
  */
-
+    
 require_once __DIR__ . '/MiniMarkdown.php';
 
 // ----------------------------------------------------------------
-// 1. Load and split cv.md into top-level sections ("# SECTION")
+// 0. Detect language
+// ----------------------------------------------------------------
+$lang = strtolower(trim($_GET['lang'] ?? 'fr'));
+if (!in_array($lang, ['fr', 'en'], true)) {
+    $lang = 'fr';
+}
+
+// ----------------------------------------------------------------
+// 1. Locale configuration
+// ----------------------------------------------------------------
+
+/**
+ * Section-title fallback labels (used when the # heading in cv.md
+ * contains no explicit text other than a [fa:...] icon).
+ */
+$locale = [
+    'fr' => [
+        'sectionLabels' => [
+            'CONTACT'        => 'Contact',
+            'SKILLS'         => 'Compétences',
+            'CERTIFICATIONS' => 'Certifications',
+            'LANGUAGES'      => 'Langues',
+            'HOBBIES'        => 'Intérêts',
+            'EXPERIENCE'     => 'Expériences Professionnelles',
+            'EDUCATION'      => 'Formations',
+            'PROFILE'        => 'Profil',
+        ],
+        'contactIcons' => [
+            'téléphone'         => '<i class="fa-solid fa-phone"></i>',
+            'email'             => '<i class="fa-solid fa-envelope"></i>',
+            'localisation'      => '<i class="fa-solid fa-location-dot"></i>',
+            'date de naissance' => '<i class="fa-solid fa-cake-candles"></i>',
+            'permis'            => '<i class="fa-solid fa-car"></i>',
+            // English aliases also understood
+            'phone'             => '<i class="fa-solid fa-phone"></i>',
+            'location'          => '<i class="fa-solid fa-location-dot"></i>',
+            'birthday'          => '<i class="fa-solid fa-cake-candles"></i>',
+            'license'           => '<i class="fa-solid fa-car"></i>',
+            'driving'           => '<i class="fa-solid fa-car"></i>',
+        ],
+        'template' => 'template_fr.html',
+    ],
+    'en' => [
+        'sectionLabels' => [
+            'CONTACT'        => 'Contact',
+            'SKILLS'         => 'Skills',
+            'CERTIFICATIONS' => 'Certifications',
+            'LANGUAGES'      => 'Languages',
+            'HOBBIES'        => 'Interests',
+            'EXPERIENCE'     => 'Work Experience',
+            'EDUCATION'      => 'Education',
+            'PROFILE'        => 'Profile',
+        ],
+        'contactIcons' => [
+            'phone'             => '<i class="fa-solid fa-phone"></i>',
+            'email'             => '<i class="fa-solid fa-envelope"></i>',
+            'location'          => '<i class="fa-solid fa-location-dot"></i>',
+            'birthday'          => '<i class="fa-solid fa-cake-candles"></i>',
+            'license'           => '<i class="fa-solid fa-car"></i>',
+            'driving'           => '<i class="fa-solid fa-car"></i>',
+            // French aliases also understood
+            'téléphone'         => '<i class="fa-solid fa-phone"></i>',
+            'localisation'      => '<i class="fa-solid fa-location-dot"></i>',
+            'date de naissance' => '<i class="fa-solid fa-cake-candles"></i>',
+            'permis'            => '<i class="fa-solid fa-car"></i>',
+        ],
+        'template' => 'template.html',
+    ],
+];
+
+$sectionLabels = $locale[$lang]['sectionLabels'];
+$contactIcons  = $locale[$lang]['contactIcons'];
+$templateFile  = $locale[$lang]['template'];
+
+// ----------------------------------------------------------------
+// 2. Load and split cv.md into top-level sections ("# SECTION")
 // ----------------------------------------------------------------
 $mdPath = __DIR__ . '/cv.md';
 if (!file_exists($mdPath)) {
@@ -30,42 +109,33 @@ function parseFaShortcodes(string $text): string
             $html  = '<i class="fa-' . $m[1] . ' fa-' . $m[2] . '"></i>';
             $index = count($GLOBALS['__mm_slots']);
             $GLOBALS['__mm_slots'][$index] = $html;
-            return '§§' . $index . '§§';  // placeholder — no < or > to escape
+            return '§§' . $index . '§§';
         },
         $text
     );
 }
 
-// Split BEFORE running shortcodes so section keys stay clean (e.g. "CONTACT" not "§§0§§ CONTACT")
+// Split BEFORE running shortcodes so section keys stay clean
 $chunks = preg_split('/^# (.+)$/m', $md, -1, PREG_SPLIT_DELIM_CAPTURE);
-$sections      = [];   // key → content body (raw markdown)
-$sectionTitles = [];   // key → original title line (may contain [fa:...] shortcodes)
+$sections      = [];
+$sectionTitles = [];
 for ($i = 1; $i < count($chunks); $i += 2) {
     $rawTitle = trim($chunks[$i]);
-    // Strip any [fa:...] shortcodes from the key so lookups stay predictable
     $key = strtoupper(trim(preg_replace('/\[fa:[^\]]+\]/i', '', $rawTitle)));
-    $sectionTitles[$key] = $rawTitle;          // keep original (with icon shortcode)
+    $sectionTitles[$key] = $rawTitle;
     $sections[$key]      = trim($chunks[$i + 1]);
 }
 
-// Now apply shortcodes to content bodies and title strings
 foreach ($sections as $k => $v)      { $sections[$k]      = parseFaShortcodes($v); }
 foreach ($sectionTitles as $k => $v) { $sectionTitles[$k] = parseFaShortcodes($v); }
 
-/**
- * Render a section title string: icon (if any) + label text.
- * Used for both aside-title and section-title elements.
- */
 function renderSectionTitle(string $raw): string
 {
-    // $raw may contain §§N§§ placeholders already processed by parseFaShortcodes
-    // Restore them via MiniMarkdown::inline so the <i> tag appears
     return MiniMarkdown::inline($raw);
 }
 
 // ----------------------------------------------------------------
-// 2. Helper: parse "## Title" blocks into timeline items
-//    Used for EXPERIENCE and EDUCATION sections.
+// 3. Helper: parse "## Title" blocks into timeline items
 // ----------------------------------------------------------------
 function parseTimelineSection(string $content): array
 {
@@ -85,9 +155,9 @@ function parseTimelineSection(string $content): array
             if (preg_match('/^-\s+(.*)$/', $line, $m)) {
                 $bullets[] = trim($m[1]);
             } elseif (preg_match('/^\*\*(.+)\*\*$/', $line, $m)) {
-                $metaParts[] = trim($m[1]); // bold date range
+                $metaParts[] = trim($m[1]);
             } else {
-                $metaParts[] = $line; // e.g. institution / company line
+                $metaParts[] = $line;
             }
         }
 
@@ -100,7 +170,6 @@ function parseTimelineSection(string $content): array
     return $items;
 }
 
-/** Render timeline items array as the .timeline-item HTML used by the template. */
 function renderTimeline(array $items): string
 {
     $html = '';
@@ -121,35 +190,20 @@ function renderTimeline(array $items): string
 }
 
 // ----------------------------------------------------------------
-// 3. Build each placeholder's HTML from its Markdown section
+// 4. Build each placeholder's HTML from its Markdown section
 // ----------------------------------------------------------------
 $placeholders = [];
 
-// --- SECTION TITLES (supports [fa:...] icons in # headings) ---
-// For every known section, expose a {{SECTION_TITLE}} placeholder
-// that renders the icon + label from the markdown heading.
-// French display labels used as fallback when the heading has no icon shortcode
-$sectionLabels = [
-    'CONTACT'        => 'Contact',
-    'SKILLS'         => 'Compétences',
-    'CERTIFICATIONS' => 'Certifications',
-    'LANGUAGES'      => 'Langues',
-    'HOBBIES'        => 'Intérêts',
-    'EXPERIENCE'     => 'Expériences Professionnelles',
-    'EDUCATION'      => 'Formations',
-    'PROFILE'        => 'Profil',
-];
+// --- SECTION TITLES ---
 foreach ($sectionLabels as $sec => $label) {
     if (isset($sectionTitles[$sec])) {
-        // Heading existed in cv.md — render it (may contain icon + text or just text)
         $placeholders[$sec . '_TITLE'] = renderSectionTitle($sectionTitles[$sec]);
     } else {
-        // Section has no custom heading — use the French default
         $placeholders[$sec . '_TITLE'] = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
     }
 }
 
-// --- HEADER (name, job title, links) ---
+// --- HEADER ---
 $headerLines = preg_split('/\r?\n/', $sections['HEADER'] ?? '');
 $headerLines = array_values(array_filter(array_map('trim', $headerLines), fn($l) => $l !== ''));
 
@@ -158,7 +212,6 @@ $placeholders['JOB_TITLE'] = MiniMarkdown::inline($headerLines[1] ?? '');
 
 $linksHtml = '';
 foreach (array_slice($headerLines, 2) as $line) {
-    // Expected format: "Label: text | https://url"
     if (preg_match('/^(.+?):\s*(.+?)(?:\s*\|\s*(\S+))?$/', $line, $m)) {
         $label = trim($m[1]);
         $text  = trim($m[2]);
@@ -168,9 +221,10 @@ foreach (array_slice($headerLines, 2) as $line) {
             'github'    => '<i class="fa-brands fa-github"></i>',
             'twitter'   => '<i class="fa-brands fa-x-twitter"></i>',
             'site web'  => '<i class="fa-solid fa-globe"></i>',
+            'website'   => '<i class="fa-solid fa-globe"></i>',
             'portfolio' => '<i class="fa-solid fa-globe"></i>',
         ];
-        $icon = '<i class="fa-solid fa-globe"></i>'; // default
+        $icon = '<i class="fa-solid fa-globe"></i>';
         foreach ($linkIcons as $keyword => $faIcon) {
             if (stripos($label, $keyword) !== false) { $icon = $faIcon; break; }
         }
@@ -184,21 +238,11 @@ $placeholders['LINKS'] = $linksHtml;
 // --- PROFILE ---
 $placeholders['PROFILE'] = '<p>' . MiniMarkdown::inline($sections['PROFILE'] ?? '') . '</p>';
 
-// --- CONTACT (FA icon per known label) ---
-// Supports optional link: "Label : display text | tel:+33..." or "| mailto:..."
-$contactIcons = [
-    'téléphone'         => '<i class="fa-solid fa-phone"></i>',
-    'email'             => '<i class="fa-solid fa-envelope"></i>',
-    'localisation'      => '<i class="fa-solid fa-location-dot"></i>',
-    'date de naissance' => '<i class="fa-solid fa-cake-candles"></i>',
-    'permis'            => '<i class="fa-solid fa-car"></i>',
-];
+// --- CONTACT ---
 $contactHtml = '';
 foreach (preg_split('/\r?\n/', trim($sections['CONTACT'] ?? '')) as $line) {
     $line = trim($line);
     if ($line === '') continue;
-    // Format: "- Label : display text | scheme:value"
-    // The scheme (tel, mailto) is captured separately so the colon in "Label :" doesn't clash
     if (!preg_match('/^-\s+(.+?)\s*:\s*(.+?)(?:\s*\|\s*((?:tel|mailto):[^\s]+))?$/u', $line, $m)) continue;
     $label   = trim($m[1]);
     $display = trim($m[2]);
@@ -218,7 +262,7 @@ $placeholders['SKILLS']         = '<ul>' . MiniMarkdown::listItems($sections['SK
 $placeholders['CERTIFICATIONS'] = '<ul class="no-bullets">' . MiniMarkdown::listItems($sections['CERTIFICATIONS'] ?? '') . '</ul>';
 $placeholders['HOBBIES']        = '<ul class="no-bullets">' . MiniMarkdown::listItems($sections['HOBBIES'] ?? '') . '</ul>';
 
-// --- LANGUAGES ("Name — Level" pairs) ---
+// --- LANGUAGES ---
 $langHtml = '';
 foreach (preg_split('/\r?\n/', trim($sections['LANGUAGES'] ?? '')) as $line) {
     $line = trim($line);
@@ -228,14 +272,26 @@ foreach (preg_split('/\r?\n/', trim($sections['LANGUAGES'] ?? '')) as $line) {
 }
 $placeholders['LANGUAGES'] = $langHtml;
 
-// --- EXPERIENCE / EDUCATION (timelines) ---
+// --- EXPERIENCE / EDUCATION ---
 $placeholders['EXPERIENCE'] = renderTimeline(parseTimelineSection($sections['EXPERIENCE'] ?? ''));
 $placeholders['EDUCATION']  = renderTimeline(parseTimelineSection($sections['EDUCATION'] ?? ''));
 
+// --- LANG SWITCHER placeholder ---
+$otherLang     = $lang === 'fr' ? 'en' : 'fr';
+$otherLangLabel = $lang === 'fr' ? 'English' : 'Français';
+$placeholders['LANG_SWITCHER'] =
+    '<a href="?lang=' . $otherLang . '" class="lang-switcher" title="Switch language">'
+    . '<i class="fa-solid fa-globe"></i> ' . $otherLangLabel
+    . '</a>';
+
 // ----------------------------------------------------------------
-// 4. Inject placeholders into template.html and output
+// 5. Inject placeholders into template and output
 // ----------------------------------------------------------------
-$template = file_get_contents(__DIR__ . '/template.html');
+$templatePath = __DIR__ . '/' . $templateFile;
+if (!file_exists($templatePath)) {
+    die('Template introuvable : ' . htmlspecialchars($templateFile));
+}
+$template = file_get_contents($templatePath);
 
 foreach ($placeholders as $key => $html) {
     $template = str_replace('{{' . $key . '}}', $html, $template);

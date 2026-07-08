@@ -374,3 +374,36 @@ main {
     color: var(--accent, #4A6FA5);
     vertical-align: middle;
 }
+
+/* ==========================================================
+   LANGUAGE SWITCHER
+   ========================================================== */
+#lang-switch {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+}
+
+.lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent, #4A6FA5);
+    text-decoration: none;
+    border: 1px solid var(--accent, #4A6FA5);
+    border-radius: 20px;
+    padding: 3px 10px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.lang-switcher:hover {
+    background: var(--accent, #4A6FA5);
+    color: #fff;
+}
+
+/* Make sure the header can contain the absolute switcher */
+#main-header {
+    position: relative;
+}
