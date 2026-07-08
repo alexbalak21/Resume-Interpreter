@@ -6,12 +6,21 @@
  * and injects the result into the appropriate language template.
  *
  * Multilingual support: append ?lang=fr (default) or ?lang=en to the URL.
- * The language controls:
- *  - Which template file is used (template_fr.html / template.html)
- *  - Fallback section-title labels when a heading has no icon shortcode
- *  - Contact icon keyword lookup table
+ *
+ * Section display titles are defined IN cv.md itself, right after the # heading:
+ *
+ *   # PROFILE
+ *   title.fr: Profil
+ *   title.en: Profile
+ *
+ * The "title.XX:" lines are stripped from the section body before rendering.
+ * If no title.XX: line exists for the current lang, the locale fallback in
+ * $locale[lang]['sectionLabels'] is used. If that's also absent, the raw key is shown.
+ *
+ * Font Awesome icons can be added to titles:
+ *   title.fr: [fa:solid:user] Profil
  */
-    
+
 require_once __DIR__ . '/MiniMarkdown.php';
 
 // ----------------------------------------------------------------
@@ -24,12 +33,8 @@ if (!in_array($lang, ['fr', 'en'], true)) {
 
 // ----------------------------------------------------------------
 // 1. Locale configuration
+//    sectionLabels = fallback only (used when cv.md has no title.XX: line)
 // ----------------------------------------------------------------
-
-/**
- * Section-title fallback labels (used when the # heading in cv.md
- * contains no explicit text other than a [fa:...] icon).
- */
 $locale = [
     'fr' => [
         'sectionLabels' => [
@@ -48,7 +53,6 @@ $locale = [
             'localisation'      => '<i class="fa-solid fa-location-dot"></i>',
             'date de naissance' => '<i class="fa-solid fa-cake-candles"></i>',
             'permis'            => '<i class="fa-solid fa-car"></i>',
-            // English aliases also understood
             'phone'             => '<i class="fa-solid fa-phone"></i>',
             'location'          => '<i class="fa-solid fa-location-dot"></i>',
             'birthday'          => '<i class="fa-solid fa-cake-candles"></i>',
@@ -75,7 +79,6 @@ $locale = [
             'birthday'          => '<i class="fa-solid fa-cake-candles"></i>',
             'license'           => '<i class="fa-solid fa-car"></i>',
             'driving'           => '<i class="fa-solid fa-car"></i>',
-            // French aliases also understood
             'téléphone'         => '<i class="fa-solid fa-phone"></i>',
             'localisation'      => '<i class="fa-solid fa-location-dot"></i>',
             'date de naissance' => '<i class="fa-solid fa-cake-candles"></i>',
@@ -90,7 +93,7 @@ $contactIcons  = $locale[$lang]['contactIcons'];
 $templateFile  = $locale[$lang]['template'];
 
 // ----------------------------------------------------------------
-// 2. Load and split cv.md into top-level sections ("# SECTION")
+// 2. Load and split cv.md into top-level sections ("# SECTION_KEY")
 // ----------------------------------------------------------------
 $mdPath = __DIR__ . '/cv.md';
 if (!file_exists($mdPath)) {
@@ -115,43 +118,84 @@ function parseFaShortcodes(string $text): string
     );
 }
 
-// Split BEFORE running shortcodes so section keys stay clean
-$chunks = preg_split('/^# (.+)$/m', $md, -1, PREG_SPLIT_DELIM_CAPTURE);
-$sections      = [];
-$sectionTitles = [];
+// Split on "# KEY" — the key is the section identifier (all-caps)
+$chunks   = preg_split('/^# (.+)$/m', $md, -1, PREG_SPLIT_DELIM_CAPTURE);
+$sections      = [];   // KEY => raw body markdown (title.XX: lines included, stripped later)
+$sectionKeys   = [];   // ordered list of keys
+
 for ($i = 1; $i < count($chunks); $i += 2) {
-    $rawTitle = trim($chunks[$i]);
-    $key = strtoupper(trim(preg_replace('/\[fa:[^\]]+\]/i', '', $rawTitle)));
-    $sectionTitles[$key] = $rawTitle;
-    $sections[$key]      = trim($chunks[$i + 1]);
+    // The key is the heading text stripped of any [fa:...] and uppercased
+    $key = strtoupper(trim(preg_replace('/\[fa:[^\]]+\]/i', '', trim($chunks[$i]))));
+    $sectionKeys[]  = $key;
+    $sections[$key] = trim($chunks[$i + 1]);
 }
 
-foreach ($sections as $k => $v)      { $sections[$k]      = parseFaShortcodes($v); }
-foreach ($sectionTitles as $k => $v) { $sectionTitles[$k] = parseFaShortcodes($v); }
-
-function renderSectionTitle(string $raw): string
+/**
+ * Extract "title.XX: ..." lines from a section body.
+ * Returns ['fr' => 'Profil', 'en' => 'Profile', ...] and the body with those lines removed.
+ */
+function extractTitleLines(string $body): array
 {
+    $titles  = [];
+    $cleaned = [];
+    foreach (preg_split('/\r?\n/', $body) as $line) {
+        if (preg_match('/^title\.([a-z]{2})\s*:\s*(.+)$/i', $line, $m)) {
+            $titles[strtolower($m[1])] = trim($m[2]);
+        } else {
+            $cleaned[] = $line;
+        }
+    }
+    return [$titles, trim(implode("\n", $cleaned))];
+}
+
+// Parse title lines out of every section body, store clean bodies back
+$sectionInlineTitles = [];   // KEY => ['fr' => '...', 'en' => '...']
+foreach ($sections as $key => $body) {
+    [$titles, $cleanBody]       = extractTitleLines($body);
+    $sectionInlineTitles[$key]  = $titles;
+    $sections[$key]             = $cleanBody;
+}
+
+// Now apply FA shortcodes to the cleaned bodies
+foreach ($sections as $k => $v) {
+    $sections[$k] = parseFaShortcodes($v);
+}
+
+// ----------------------------------------------------------------
+// 3. Resolve display title for current language
+//    Priority: cv.md title.XX line > locale fallback > raw key
+// ----------------------------------------------------------------
+function resolveTitle(string $key, string $lang, array $inlineTitles, array $fallbacks): string
+{
+    // 1. Inline title in cv.md for this language
+    $raw = $inlineTitles[$key][$lang] ?? null;
+
+    // 2. Fallback from locale config
+    if ($raw === null) {
+        $raw = $fallbacks[$key] ?? $key;
+    }
+
+    // Parse FA shortcodes in the title string
+    $raw = parseFaShortcodes($raw);
     return MiniMarkdown::inline($raw);
 }
 
 // ----------------------------------------------------------------
-// 3. Helper: parse "## Title" blocks into timeline items
+// 4. Helper: parse "## Title" blocks into timeline items
 // ----------------------------------------------------------------
 function parseTimelineSection(string $content): array
 {
     $blocks = preg_split('/^## (.+)$/m', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $items = [];
+    $items  = [];
     for ($i = 1; $i < count($blocks); $i += 2) {
-        $title = trim($blocks[$i]);
-        $body  = trim($blocks[$i + 1]);
-
+        $title     = trim($blocks[$i]);
+        $body      = trim($blocks[$i + 1]);
         $metaParts = [];
         $bullets   = [];
 
         foreach (preg_split('/\r?\n/', $body) as $line) {
             $line = trim($line);
             if ($line === '') continue;
-
             if (preg_match('/^-\s+(.*)$/', $line, $m)) {
                 $bullets[] = trim($m[1]);
             } elseif (preg_match('/^\*\*(.+)\*\*$/', $line, $m)) {
@@ -190,17 +234,14 @@ function renderTimeline(array $items): string
 }
 
 // ----------------------------------------------------------------
-// 4. Build each placeholder's HTML from its Markdown section
+// 5. Build placeholders
 // ----------------------------------------------------------------
 $placeholders = [];
 
-// --- SECTION TITLES ---
-foreach ($sectionLabels as $sec => $label) {
-    if (isset($sectionTitles[$sec])) {
-        $placeholders[$sec . '_TITLE'] = renderSectionTitle($sectionTitles[$sec]);
-    } else {
-        $placeholders[$sec . '_TITLE'] = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
-    }
+// --- SECTION TITLES (from cv.md inline titles or locale fallback) ---
+$knownSections = array_keys($sectionLabels);
+foreach ($knownSections as $sec) {
+    $placeholders[$sec . '_TITLE'] = resolveTitle($sec, $lang, $sectionInlineTitles, $sectionLabels);
 }
 
 // --- HEADER ---
@@ -213,9 +254,9 @@ $placeholders['JOB_TITLE'] = MiniMarkdown::inline($headerLines[1] ?? '');
 $linksHtml = '';
 foreach (array_slice($headerLines, 2) as $line) {
     if (preg_match('/^(.+?):\s*(.+?)(?:\s*\|\s*(\S+))?$/', $line, $m)) {
-        $label = trim($m[1]);
-        $text  = trim($m[2]);
-        $url   = isset($m[3]) ? trim($m[3]) : $text;
+        $lbl  = trim($m[1]);
+        $text = trim($m[2]);
+        $url  = isset($m[3]) ? trim($m[3]) : $text;
         $linkIcons = [
             'linkedin'  => '<i class="fa-brands fa-linkedin"></i>',
             'github'    => '<i class="fa-brands fa-github"></i>',
@@ -226,7 +267,7 @@ foreach (array_slice($headerLines, 2) as $line) {
         ];
         $icon = '<i class="fa-solid fa-globe"></i>';
         foreach ($linkIcons as $keyword => $faIcon) {
-            if (stripos($label, $keyword) !== false) { $icon = $faIcon; break; }
+            if (stripos($lbl, $keyword) !== false) { $icon = $faIcon; break; }
         }
         $linksHtml .= '<a href="' . htmlspecialchars($url, ENT_QUOTES) . '" target="_blank">'
                     . '<span class="icon">' . $icon . '</span> ' . MiniMarkdown::inline($text)
@@ -244,10 +285,10 @@ foreach (preg_split('/\r?\n/', trim($sections['CONTACT'] ?? '')) as $line) {
     $line = trim($line);
     if ($line === '') continue;
     if (!preg_match('/^-\s+(.+?)\s*:\s*(.+?)(?:\s*\|\s*((?:tel|mailto):[^\s]+))?$/u', $line, $m)) continue;
-    $label   = trim($m[1]);
+    $lbl     = trim($m[1]);
     $display = trim($m[2]);
     $href    = isset($m[3]) ? trim($m[3]) : null;
-    $icon    = $contactIcons[mb_strtolower($label)] ?? '<i class="fa-solid fa-circle-dot"></i>';
+    $icon    = $contactIcons[mb_strtolower($lbl)] ?? '<i class="fa-solid fa-circle-dot"></i>';
     $text    = MiniMarkdown::inline($display);
     $content = $href
         ? '<a href="' . htmlspecialchars($href, ENT_QUOTES) . '">' . $text . '</a>'
@@ -276,8 +317,8 @@ $placeholders['LANGUAGES'] = $langHtml;
 $placeholders['EXPERIENCE'] = renderTimeline(parseTimelineSection($sections['EXPERIENCE'] ?? ''));
 $placeholders['EDUCATION']  = renderTimeline(parseTimelineSection($sections['EDUCATION'] ?? ''));
 
-// --- LANG SWITCHER placeholder ---
-$otherLang     = $lang === 'fr' ? 'en' : 'fr';
+// --- LANG SWITCHER ---
+$otherLang      = $lang === 'fr' ? 'en' : 'fr';
 $otherLangLabel = $lang === 'fr' ? 'English' : 'Français';
 $placeholders['LANG_SWITCHER'] =
     '<a href="?lang=' . $otherLang . '" class="lang-switcher" title="Switch language">'
@@ -285,7 +326,7 @@ $placeholders['LANG_SWITCHER'] =
     . '</a>';
 
 // ----------------------------------------------------------------
-// 5. Inject placeholders into template and output
+// 6. Inject into template and output
 // ----------------------------------------------------------------
 $templatePath = __DIR__ . '/' . $templateFile;
 if (!file_exists($templatePath)) {

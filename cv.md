@@ -5,10 +5,12 @@ LinkedIn: @alexandre-balakirev | https://linkedin.com/in/alexandre-balakirev
 Site web: www.alex-balak.online | https://www.alex-balak.online
 
 # PROFILE
-**Annalyste Support Applicatif N2** et **Développeur Web**, spécialisé dans le diagnostic d’incidents, les corrections et ajustements de code. J’analyse, reproduis et résous les anomalies pour garantir la qualité et la continuité du service.
-
+title: Profil
+**Annalyste Support Applicatif N2** et **Développeur Web**, spécialisé dans le diagnostic d'incidents, les corrections et ajustements de code. J'analyse, reproduis et résous les anomalies pour garantir la qualité et la continuité du service.
 
 # CONTACT
+title.fr: Contact
+title.en: Contact
 - Téléphone : (+33) 06.58.37.06.05 | tel:+33658370605
 - Email : alex.balak@outlook.fr | mailto:alex.balak@outlook.fr
 - Localisation : Lyon 8, France
@@ -16,6 +18,8 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 - Permis : Permis B
 
 # SKILLS
+title.fr: Compétences
+title.en: Skills
 - [fa:solid:headset] Support applicatif N1/N2
 - [fa:solid:magnifying-glass] Analyse d'incidents et logs
 - [fa:solid:bug] Développement correctif
@@ -26,23 +30,30 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 - [fa:solid:location-crosshairs] Outils de ticketing : Jira
 - [fa:brands:windows] Windows 10 / 11 / Office365
 
-
 # CERTIFICATIONS
+title.fr: Certifications
+title.en: Certifications
 - IBM Java Developer
 - Microsoft Python Developer
 - Meta React Developer
 - IBM Node / Express Developer
 
 # LANGUAGES
+title.fr: Langues
+title.en: Languages
 - Anglais — Courant - C1 
 - Russe — Natif - Courant
 - Allemand — Scoliare - Notions
 
 # HOBBIES
+title.fr: Intérêts
+title.en: Interests
 - Fitness / Musculation
 - Escalade / Randonnée
 
 # EXPERIENCE
+title.fr: Expériences Professionnelles
+title.en: Work Experience
 
 ## Développeur  Full-Stack - Novocib
 **Jul 2025 – Feb 2026**
@@ -52,19 +63,19 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 
 ## Développeur SAGE X3 - Kardol
 **Oct 2024 – Avr 2025**
-- Maintenance applicative et résolution d’incidents sur l’ERP Sage X3.
+- Maintenance applicative et résolution d'incidents sur l'ERP Sage X3.
 - Analyse fonctionnelle et technique, corrections de données.
 - Développement de spécifiques clients, redaction documentation.
 
 ## Développeur Full-Stack - Novocib
 **Fév 2024 – Mai 2024**
-- Développement backend (Laravel, MySQL) et création d’APIs internes.
+- Développement backend (Laravel, MySQL) et création d'APIs internes.
 - Automatisation de tâches via Python.
 - Support technique interne : diagnostic, reproduction, corrections SQL.
 
 ## Développeur Web - Fly'IT
 **Oct 2023 – Nov 2023**
-- Création du site web de l’entreprise (HTML, CSS, JS, PHP).
+- Création du site web de l'entreprise (HTML, CSS, JS, PHP).
 
 ## Analyste Fonctionnel N2 — CGI
 **Juil 2022 – Oct 2023**
@@ -75,10 +86,12 @@ Site web: www.alex-balak.online | https://www.alex-balak.online
 ## Technicien Avionique - Armée de Terre, Phalsbourg
 **Mar 2010 – Juin 2021**
 - Diagnostic et maintenance de systèmes avioniques embarqués.
-- Gestion d’incidents complexes dans un environnement exigeant.
+- Gestion d'incidents complexes dans un environnement exigeant.
 - Travail en anglais sur documentation technique et systèmes.
 
 # EDUCATION
+title.fr: Formations
+title.en: Education
 
 ## Bac+2 : Développeur Web Full-Stack
 CMFP (AFPA), Fontenay-le-Comte  
