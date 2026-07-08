@@ -9,17 +9,15 @@ title: Profil
 **Annalyste Support Applicatif N2** et **Développeur Web**, spécialisé dans le diagnostic d'incidents, les corrections et ajustements de code. J'analyse, reproduis et résous les anomalies pour garantir la qualité et la continuité du service.
 
 # CONTACT
-title.fr: Contact
-title.en: Contact
+title: Contact
 - Téléphone : (+33) 06.58.37.06.05 | tel:+33658370605
 - Email : alex.balak@outlook.fr | mailto:alex.balak@outlook.fr
 - Localisation : Lyon 8, France
-- Date de naissance : 06.11.1985
+- Date de naissance : 06/11/1985
 - Permis : Permis B
 
 # SKILLS
-title.fr: Compétences
-title.en: Skills
+title: Compétences
 - [fa:solid:headset] Support applicatif N1/N2
 - [fa:solid:magnifying-glass] Analyse d'incidents et logs
 - [fa:solid:bug] Développement correctif
@@ -31,35 +29,30 @@ title.en: Skills
 - [fa:brands:windows] Windows 10 / 11 / Office365
 
 # CERTIFICATIONS
-title.fr: Certifications
-title.en: Certifications
+title: Certifications
 - IBM Java Developer
 - Microsoft Python Developer
 - Meta React Developer
 - IBM Node / Express Developer
 
 # LANGUAGES
-title.fr: Langues
-title.en: Languages
-- Anglais — Courant - C1 
+title: Langues
+- Anglais — Courant - C1
 - Russe — Natif - Courant
-- Allemand — Scoliare - Notions
+- Allemand — Scolaire - Notions
 
 # HOBBIES
-title.fr: Intérêts
-title.en: Interests
+title: Intérêts
 - Fitness / Musculation
 - Escalade / Randonnée
 
 # EXPERIENCE
-title.fr: Expériences Professionnelles
-title.en: Work Experience
+title: Expériences Professionnelles
 
-## Développeur  Full-Stack - Novocib
+## Développeur Full-Stack - Novocib
 **Jul 2025 – Feb 2026**
 - Amélioration du SCO et développement d'outils internes de back-office, messagerie... (Spring Boot, PostgreSQL)
 - Développement front-end réactif avec React JS et Tailwind CSS
-
 
 ## Développeur SAGE X3 - Kardol
 **Oct 2024 – Avr 2025**
@@ -79,7 +72,7 @@ title.en: Work Experience
 
 ## Analyste Fonctionnel N2 — CGI
 **Juil 2022 – Oct 2023**
-- Diagnostic et résolution de problèmes sur logiciels CAO (Bash, C) 
+- Diagnostic et résolution de problèmes sur logiciels CAO (Bash, C)
 - Support utilisateurs et correction de bugs (Jira, Notions)
 - Développement d'outils internes en Python.
 
@@ -90,8 +83,7 @@ title.en: Work Experience
 - Travail en anglais sur documentation technique et systèmes.
 
 # EDUCATION
-title.fr: Formations
-title.en: Education
+title: Formations
 
 ## Bac+2 : Développeur Web Full-Stack
 CMFP (AFPA), Fontenay-le-Comte  

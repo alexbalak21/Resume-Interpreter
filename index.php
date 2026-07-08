@@ -131,28 +131,28 @@ for ($i = 1; $i < count($chunks); $i += 2) {
 }
 
 /**
- * Extract "title.XX: ..." lines from a section body.
- * Returns ['fr' => 'Profil', 'en' => 'Profile', ...] and the body with those lines removed.
+ * Extract a single "title: ..." line from a section body.
+ * Returns [title|null, cleaned_body].
  */
-function extractTitleLines(string $body): array
+function extractTitleLine(string $body): array
 {
-    $titles  = [];
+    $title   = null;
     $cleaned = [];
     foreach (preg_split('/\r?\n/', $body) as $line) {
-        if (preg_match('/^title\.([a-z]{2})\s*:\s*(.+)$/i', $line, $m)) {
-            $titles[strtolower($m[1])] = trim($m[2]);
+        if ($title === null && preg_match('/^title\s*:\s*(.+)$/i', $line, $m)) {
+            $title = trim($m[1]);
         } else {
             $cleaned[] = $line;
         }
     }
-    return [$titles, trim(implode("\n", $cleaned))];
+    return [$title, trim(implode("\n", $cleaned))];
 }
 
-// Parse title lines out of every section body, store clean bodies back
-$sectionInlineTitles = [];   // KEY => ['fr' => '...', 'en' => '...']
+// Parse title line out of every section body, store clean bodies back
+$sectionInlineTitles = [];   // KEY => string|null
 foreach ($sections as $key => $body) {
-    [$titles, $cleanBody]       = extractTitleLines($body);
-    $sectionInlineTitles[$key]  = $titles;
+    [$title, $cleanBody]        = extractTitleLine($body);
+    $sectionInlineTitles[$key]  = $title;
     $sections[$key]             = $cleanBody;
 }
 
@@ -162,13 +162,13 @@ foreach ($sections as $k => $v) {
 }
 
 // ----------------------------------------------------------------
-// 3. Resolve display title for current language
-//    Priority: cv.md title.XX line > locale fallback > raw key
+// 3. Resolve display title
+//    Priority: cv.md "title:" line > locale fallback > raw key
 // ----------------------------------------------------------------
 function resolveTitle(string $key, string $lang, array $inlineTitles, array $fallbacks): string
 {
-    // 1. Inline title in cv.md for this language
-    $raw = $inlineTitles[$key][$lang] ?? null;
+    // 1. Inline title from cv.md
+    $raw = $inlineTitles[$key] ?? null;
 
     // 2. Fallback from locale config
     if ($raw === null) {
@@ -316,14 +316,6 @@ $placeholders['LANGUAGES'] = $langHtml;
 // --- EXPERIENCE / EDUCATION ---
 $placeholders['EXPERIENCE'] = renderTimeline(parseTimelineSection($sections['EXPERIENCE'] ?? ''));
 $placeholders['EDUCATION']  = renderTimeline(parseTimelineSection($sections['EDUCATION'] ?? ''));
-
-// --- LANG SWITCHER ---
-$otherLang      = $lang === 'fr' ? 'en' : 'fr';
-$otherLangLabel = $lang === 'fr' ? 'English' : 'Français';
-$placeholders['LANG_SWITCHER'] =
-    '<a href="?lang=' . $otherLang . '" class="lang-switcher" title="Switch language">'
-    . '<i class="fa-solid fa-globe"></i> ' . $otherLangLabel
-    . '</a>';
 
 // ----------------------------------------------------------------
 // 6. Inject into template and output

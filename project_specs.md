@@ -18,6 +18,7 @@ This application is a full‑stack Laravel platform where users can:
 - Edit each section using Markdown
 - Choose icons for sections and skills
 - Manage skill levels (beginner, advanced, expert, percentage, etc.)
+- Manage language levels (basic, intermediate, advanced, fluent)
 - Export the CV using a rendering engine (HTML → PDF)
 - Import and export a full CV as a Markdown file
 - Eventually choose between multiple CV templates
@@ -73,6 +74,17 @@ A skill entry contains:
 - Or numeric percentage (0–100)
 - Belongs to a resume
 
+## Languages (special section type)
+A language entry contains:
+- Name
+- Level (one of the 4 official levels below)
+
+### **Language Levels**
+- **basic** — elementary usage, simple communication  
+- **intermediate** — conversational, work‑capable  
+- **advanced** — professional fluency  
+- **fluent** — native or near‑native mastery  
+
 ---
 
 # 3. Database Structure
@@ -110,6 +122,13 @@ A skill entry contains:
 - name  
 - level_type (enum: beginner, intermediate, advanced, expert, percentage)  
 - level_value (nullable integer)  
+- timestamps  
+
+## languages
+- id  
+- resume_id (FK)  
+- name  
+- level (enum: basic, intermediate, advanced, fluent)  
 - timestamps  
 
 ---
@@ -218,6 +237,11 @@ Markdown → HTML conversion happens during rendering.
 - PUT `/skills/{id}`  
 - DELETE `/skills/{id}`  
 
+## Languages
+- POST `/resumes/{id}/languages`  
+- PUT `/languages/{id}`  
+- DELETE `/languages/{id}`  
+
 ## PDF Export
 - GET `/resumes/{id}/pdf`  
 
@@ -242,38 +266,18 @@ language: fr
 template: default
 profile_image_base64: <BASE64_STRING>
 
-# HEADER
-Alexandre Balakirev  
-Développeur Full‑Stack Java / React
+# LANGUAGES
+## Language
+name: English
+level: fluent
 
-# PROFILE
-Développeur Java / Spring Boot et JavaScript / React...
+## Language
+name: French
+level: advanced
 
-# CONTACT
-- Téléphone : (+33) 06.58.37.06.05
-- Email : alex.balak@outlook.fr
-
-# SKILLS
-## Skill
-icon: code
-name: Java / Spring Boot
-level_type: expert
-level_value: 95
-
-## Skill
-icon: react
-name: React JS / Next.js
-level_type: advanced
-level_value: 85
-
-# EXPERIENCE
-## Développeur Full‑Stack — Novocib (2025–2026)
-- Amélioration du SCO...
-- Développement front‑end...
-
-# EDUCATION
-## Bac+2 — Développeur Web
-CMFP (AFPA), 2020–2026
+## Language
+name: German
+level: basic
 ```
 
 ## 9.2 Import Workflow
@@ -284,10 +288,12 @@ CMFP (AFPA), 2020–2026
    - META block  
    - Sections  
    - Skills  
+   - Languages  
 4. Validates:
    - Required fields  
    - Base64 image  
    - Section structure  
+   - Language level enum  
 5. Creates or updates the resume  
 6. Stores everything in the database  
 
@@ -298,6 +304,7 @@ CMFP (AFPA), 2020–2026
 - Base64 image must be valid  
 - Sections must start with `#`  
 - Skills must start with `## Skill`  
+- Languages must start with `## Language`  
 - Unknown sections allowed  
 
 ---
@@ -323,9 +330,9 @@ This Laravel application is a modular, scalable CV builder with:
 - Markdown‑editable sections  
 - Base64 profile images  
 - Skill management  
+- Language level management  
 - Template rendering  
 - PDF export  
 - Full Markdown import/export  
 
 It is designed to evolve into a complete CV‑building platform with customizable templates and advanced editing tools.
-

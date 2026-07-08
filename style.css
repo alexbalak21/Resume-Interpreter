@@ -73,6 +73,7 @@ aside {
     position: relative;
 }
 
+/* SMALL HORISONTAL LINE UNDER ASIDE TITLES */
 .aside-title::after {
     content: "";
     display: block;
@@ -102,7 +103,6 @@ aside {
 #skills ul li,
 #certifications ul li {
     margin-bottom: 7px;
-    font-weight: 500;
     position: relative;
     padding-left: 0;
 }
@@ -192,6 +192,7 @@ main {
     margin-left: -6px;
 }
 
+/* SMALL HORISONTAL LINE UNDER SECTION TITLES  */
 .section-title::after {
     content: "";
     display: block;
@@ -332,7 +333,7 @@ main {
 
 #skills ul li i,
 #certifications ul li i {
-    font-size: 17px;
+    font-size: 18px;
     margin-right: 2px;
     opacity: 0.9;   
 }
@@ -384,24 +385,7 @@ main {
     right: 16px;
 }
 
-.lang-switcher {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent, #4A6FA5);
-    text-decoration: none;
-    border: 1px solid var(--accent, #4A6FA5);
-    border-radius: 20px;
-    padding: 3px 10px;
-    transition: background 0.2s, color 0.2s;
-}
 
-.lang-switcher:hover {
-    background: var(--accent, #4A6FA5);
-    color: #fff;
-}
 
 /* Make sure the header can contain the absolute switcher */
 #main-header {
