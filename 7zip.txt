@@ -1,1 +1,1 @@
-7z a document-flow.zip app\Http app\Models app\Services app\Providers database\migrations resources\views resources\css resources\js routes config\app.php vite.config.js package.json storage\app\templates memory.md
+7z a -tzip Resume-Editor.zip . "-xr!vendor" "-xr!node_modules" "-xr!.env"
